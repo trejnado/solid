@@ -1,0 +1,8 @@
+# player name, points, rebounds, assists, steals
+Michael Jordan, 38, 11, 5, 3
+Kobe Bryant, 34, 8, 8, 5
+Jan Nowak, 23, 12, 19, 0
+Marcin Gortad, 20, 10, 5, 0
+Dennis Rodman, 7, 14, 10, 3
+Karl Malone, 27, 12, 4, 0
+John Stockton, 20, 1, 11, 5
