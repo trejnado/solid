@@ -1,8 +1,11 @@
 package trainings.solid;
 
+import trainings.solid.comparators.*;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedList;
@@ -13,7 +16,7 @@ public class PlayerStats {
     public static void main(String[] args) throws IOException, URISyntaxException {
         List<Player> players = new LinkedList<>();
         URI datasetUri = PlayerStats.class.getClassLoader().getResource("player-data.txt").toURI();
-        for (String line : Files.readAllLines(Paths.get(datasetUri))) {
+        for (String line : Files.readAllLines(Paths.get(datasetUri), StandardCharsets.UTF_8)) {
             if (line.startsWith("#")) {
                 System.out.println(line);
                 continue;
@@ -35,19 +38,19 @@ public class PlayerStats {
             System.out.println("Sorting by: " + args[1]);
             switch (args[1]) {
                 case "name":
-                    players.sort((a, b) -> b.getName().compareTo(a.getName()));
+                    players.sort(new NameComparator());
                     break;
                 case "points":
-                    players.sort((a, b) -> b.getPoints() - a.getPoints());
+                    players.sort(new PointsComparator());
                     break;
                 case "rebounds":
-                    players.sort((a, b) -> b.getRebounds() - a.getRebounds());
+                    players.sort(new ReboundsComparator());
                     break;
                 case "assist":
-                    players.sort((a, b) -> b.getAssists() - a.getAssists());
+                    players.sort(new AssistsComparator());
                     break;
                 case "seals":
-                    players.sort((a, b) -> b.getSteals() - a.getSteals());
+                    players.sort(new StealsComparator());
                     break;
             }
         } // pick best by X
