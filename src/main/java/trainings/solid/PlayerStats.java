@@ -11,6 +11,9 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
+import static java.util.Collections.sort;
+
+
 public class PlayerStats {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
@@ -38,19 +41,19 @@ public class PlayerStats {
             System.out.println("Sorting by: " + args[1]);
             switch (args[1]) {
                 case "name":
-                    players.sort(new NameComparator());
+                    sort( players, new NameComparator() );
                     break;
                 case "points":
-                    players.sort(new PointsComparator());
+                    sort( players, new PointsComparator() );
                     break;
                 case "rebounds":
-                    players.sort(new ReboundsComparator());
+                    sort( players, new ReboundsComparator() );
                     break;
                 case "assist":
-                    players.sort(new AssistsComparator());
+                    sort( players, new AssistsComparator());
                     break;
                 case "seals":
-                    players.sort(new StealsComparator());
+                    sort( players, new StealsComparator());
                     break;
             }
         } // pick best by X
