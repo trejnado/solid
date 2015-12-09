@@ -4,9 +4,7 @@ public class Player {
 
     private String name;
     private byte points;
-    private byte rebounds;
     private byte assists;
-    private byte steals;
 
     public String getName() {
         return name;
@@ -24,14 +22,6 @@ public class Player {
         this.points = points;
     }
 
-    public byte getRebounds() {
-        return rebounds;
-    }
-
-    public void setRebounds(byte rebounds) {
-        this.rebounds = rebounds;
-    }
-
     public byte getAssists() {
         return assists;
     }
@@ -40,22 +30,12 @@ public class Player {
         this.assists = assists;
     }
 
-    public byte getSteals() {
-        return steals;
-    }
-
-    public void setSteals(byte steals) {
-        this.steals = steals;
-    }
-
     @Override
     public String toString() {
         return "Player{" +
                 "name='" + name + '\'' +
                 ", points=" + points +
-                ", rebounds=" + rebounds +
                 ", assists=" + assists +
-                ", steals=" + steals +
                 '}';
     }
 }

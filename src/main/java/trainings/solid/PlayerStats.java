@@ -28,9 +28,7 @@ public class PlayerStats {
             Player player = new Player();
             player.setName(fields[0]);
             player.setPoints(Byte.valueOf(fields[1].trim()));
-            player.setRebounds(Byte.valueOf(fields[2].trim()));
-            player.setAssists(Byte.valueOf(fields[3].trim()));
-            player.setSteals(Byte.valueOf(fields[4].trim()));
+            player.setAssists(Byte.valueOf(fields[2].trim()));
 
             players.add(player);
         }
@@ -46,15 +44,11 @@ public class PlayerStats {
                 case "points":
                     sort( players, new PointsComparator() );
                     break;
-                case "rebounds":
-                    sort( players, new ReboundsComparator() );
-                    break;
                 case "assist":
                     sort( players, new AssistsComparator());
                     break;
-                case "seals":
-                    sort( players, new StealsComparator());
-                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown option: " + args[1]);
             }
         } // pick best by X
 
