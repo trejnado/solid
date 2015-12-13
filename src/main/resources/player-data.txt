@@ -1,8 +1,8 @@
 # player name, points, assists
-Michael Jordan, 38, 5
-Kobe Bryant, 34, 8
-Jan Nowak, 23, 19
-Marcin Gortad, 20, 5
-Dennis Rodman, 7, 10
-Karl Malone, 27, 4
-John Stockton, 20, 11
+Michael Jordan, SG, 38, 5
+Kobe Bryant, SG, 34, 8
+Jan Nowak, PF, 23, 19
+Marcin Gortad, C, 20, 5
+Dennis Rodman, SF, 7, 10
+Karl Malone, PF, 27, 4
+John Stockton, PG, 20, 11

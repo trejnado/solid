@@ -2,9 +2,12 @@ package trainings.solid;
 
 public class Player {
 
+    public enum Position { PG, SG, SF, PF, C }
+
     private String name;
     private byte points;
     private byte assists;
+    private Position position;
 
     public String getName() {
         return name;
@@ -30,10 +33,19 @@ public class Player {
         this.assists = assists;
     }
 
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
                 "name='" + name + '\'' +
+                ", position=" + position +
                 ", points=" + points +
                 ", assists=" + assists +
                 '}';

@@ -1,5 +1,6 @@
 package trainings.solid;
 
+import trainings.solid.Player.Position;
 import trainings.solid.comparators.*;
 
 import java.io.IOException;
@@ -27,8 +28,9 @@ public class PlayerStats {
             String[] fields = line.split(",");
             Player player = new Player();
             player.setName(fields[0]);
-            player.setPoints(Byte.valueOf(fields[1].trim()));
-            player.setAssists(Byte.valueOf(fields[2].trim()));
+            player.setPosition(Position.valueOf(fields[1].trim()));
+            player.setPoints(Byte.valueOf(fields[2].trim()));
+            player.setAssists(Byte.valueOf(fields[3].trim()));
 
             players.add(player);
         }
@@ -52,9 +54,8 @@ public class PlayerStats {
             }
         } // pick best by X
 
+        CSVExporter csv = new CSVExporter("players");
         System.out.println("Players:");
-        for (Player p : players) {
-            System.out.println(p);
-        }
+        csv.write(players);
     }
 }
