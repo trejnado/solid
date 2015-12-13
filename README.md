@@ -55,6 +55,7 @@
 <li><a href="#sec-5-5">5.5. Examples:</a></li>
 </ul>
 </li>
+<li><a href="#sec-6">6. Reading</a></li>
 </ul>
 </div>
 </div>
@@ -305,3 +306,9 @@ With DIP - OO project, without DIP - procedural (no matter which language).
 ## Examples:<a id="sec-5-5" name="sec-5-5"></a>
 
 Button->SwitchableDevice->Lamp, Layered Architecture
+
+# Reading<a id="sec-6" name="sec-6"></a>
+
+-   Chapters 8 to 12 in "Agile Principles, Patterns, and Practices in C#" by Robert Martin
+
+-   GRASP Patterns in "Applying UML and Patterns" by Craig Larman
