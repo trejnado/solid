@@ -68,6 +68,11 @@ public class PlayerStats {
         System.out.println("Players:");
         csv.write(players);
 
+        Team team = new Team("SOLID", players);
+        System.out.println("Team: " + team.getName());
+        System.out.println(" points : " + team.getPoints());
+        System.out.println(" assists: " + team.getAssists());
+
         university.stopAcademicYear();
     }
 }

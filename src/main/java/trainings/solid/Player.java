@@ -5,8 +5,8 @@ public class Player {
     public enum Position { PG, SG, SF, PF, C }
 
     private String name;
-    private byte points;
-    private byte assists;
+    private int points;
+    private int assists;
     private Position position;
 
     public String getName() {
@@ -17,19 +17,19 @@ public class Player {
         this.name = name;
     }
 
-    public byte getPoints() {
+    public int getPoints() {
         return points;
     }
 
-    public void setPoints(byte points) {
+    public void setPoints(int points) {
         this.points = points;
     }
 
-    public byte getAssists() {
+    public int getAssists() {
         return assists;
     }
 
-    public void setAssists(byte assists) {
+    public void setAssists(int assists) {
         this.assists = assists;
     }
 
