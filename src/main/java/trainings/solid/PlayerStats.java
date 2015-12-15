@@ -18,6 +18,10 @@ import static java.util.Collections.sort;
 public class PlayerStats {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
+        PlayerRecruiter recruiter = new PlayerRecruiter();
+        University university = new University(recruiter);
+        university.startAcademicYear();
+
         List<Player> players = new LinkedList<>();
         URI datasetUri = PlayerStats.class.getClassLoader().getResource("player-data.txt").toURI();
         for (String line : Files.readAllLines(Paths.get(datasetUri), StandardCharsets.UTF_8)) {
@@ -52,10 +56,18 @@ public class PlayerStats {
                 default:
                     throw new IllegalArgumentException("Unknown option: " + args[1]);
             }
-        } // pick best by X
+        }
+
+        while (recruiter.hasPlayers()) {
+            players.add(recruiter.draft());
+        }
+
+        // pick best by X
 
         CSVExporter csv = new CSVExporter("players");
         System.out.println("Players:");
         csv.write(players);
+
+        university.stopAcademicYear();
     }
 }
