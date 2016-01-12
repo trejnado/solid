@@ -22,6 +22,7 @@ public class Application {
         University university = new University(recruiter);
         university.startAcademicYear();
 
+        // load professional players from a file
         List<Player> players = new LinkedList<>();
         URI datasetUri = Application.class.getClassLoader().getResource("player-data.txt").toURI();
         for (String line : Files.readAllLines(Paths.get(datasetUri), StandardCharsets.UTF_8)) {
@@ -41,6 +42,7 @@ public class Application {
 
         //System.out.println("Players: " + players);
 
+        // sort players by selected field:
         if (args.length == 2 && args[0].equals("sort")) {
             System.out.println("Sorting by: " + args[1]);
             switch (args[1]) {
@@ -58,16 +60,18 @@ public class Application {
             }
         }
 
+        // recruit new players from the University
         while (recruiter.hasPlayers()) {
             players.add(recruiter.draft());
         }
 
-        // pick best by X
 
+        // export all players to a CSV file:
         CSVExporter csv = new CSVExporter("players");
         System.out.println("Players:");
         csv.write(players);
 
+        // form a team from players and print its stats:
         Team team = new Team("SOLID", players);
         System.out.println("Team: " + team.getName());
         System.out.println(" points : " + team.getPoints());
