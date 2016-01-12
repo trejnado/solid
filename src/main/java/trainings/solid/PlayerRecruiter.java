@@ -16,6 +16,11 @@ public class PlayerRecruiter {
         return !players.isEmpty();
     }
 
+    /**
+     * Return a random player or null if have no players.
+     *
+     * @return random player or null
+     */
     public synchronized Player draft() {
         Collections.shuffle(players);
         return players.isEmpty() ? null : players.remove(0);
