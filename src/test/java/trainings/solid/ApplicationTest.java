@@ -5,7 +5,7 @@ package trainings.solid;
  * Calculate statistics.
  * Print results (or export to CSV)
  */
-public class PlayerStatsTest {
+public class ApplicationTest {
 
 
 }

@@ -15,7 +15,7 @@ import java.util.List;
 import static java.util.Collections.sort;
 
 
-public class PlayerStats {
+public class Application {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
         PlayerRecruiter recruiter = new PlayerRecruiter();
@@ -23,7 +23,7 @@ public class PlayerStats {
         university.startAcademicYear();
 
         List<Player> players = new LinkedList<>();
-        URI datasetUri = PlayerStats.class.getClassLoader().getResource("player-data.txt").toURI();
+        URI datasetUri = Application.class.getClassLoader().getResource("player-data.txt").toURI();
         for (String line : Files.readAllLines(Paths.get(datasetUri), StandardCharsets.UTF_8)) {
             if (line.startsWith("#")) {
                 System.out.println(line);
