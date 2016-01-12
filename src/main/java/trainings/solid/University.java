@@ -12,10 +12,10 @@ import java.util.concurrent.TimeUnit;
 public class University {
 
     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    private final UniCoach coach;
+    private final UniversityCoach coach;
 
     public University(PlayerRecruiter recruiter) {
-        this.coach = new UniCoach(recruiter);
+        this.coach = new UniversityCoach(recruiter);
     }
 
     public void startAcademicYear() {

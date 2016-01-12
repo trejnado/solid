@@ -4,13 +4,13 @@ import trainings.solid.Player.Position;
 
 import java.util.Random;
 
-public class UniCoach {
+public class UniversityCoach {
 
     private Random random = new Random();
 
     private PlayerRecruiter recruiter;
 
-    public UniCoach(PlayerRecruiter recruiter) {
+    public UniversityCoach(PlayerRecruiter recruiter) {
         this.recruiter = recruiter;
     }
 
