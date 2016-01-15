@@ -1,7 +1,6 @@
 package trainings.solid;
 
 import trainings.solid.Player.Position;
-import trainings.solid.comparators.*;
 
 import java.io.IOException;
 import java.net.URI;
@@ -12,12 +11,11 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-import static java.util.Collections.sort;
-
-
 public class Application {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
+        Sorter sorter = CommandLineParser.parse(args);
+
         PlayerRecruiter recruiter = new PlayerRecruiter();
         University university = new University(recruiter);
         university.startAcademicYear();
@@ -40,31 +38,15 @@ public class Application {
             players.add(player);
         }
 
-        //System.out.println("Players: " + players);
-
-        // sort players by selected field:
-        if (args.length == 2 && args[0].equals("sort")) {
-            System.out.println("Sorting by: " + args[1]);
-            switch (args[1]) {
-                case "name":
-                    sort( players, new NameComparator() );
-                    break;
-                case "points":
-                    sort( players, new PointsComparator() );
-                    break;
-                case "assist":
-                    sort( players, new AssistsComparator());
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unknown option: " + args[1]);
-            }
-        }
-
         // recruit new players from the University
         while (recruiter.hasPlayers()) {
             players.add(recruiter.draft());
         }
 
+        // process players
+        if (sorter != null) {
+            sorter.sort(players);
+        }
 
         // export all players to a CSV file:
         CSVExporter csv = new CSVExporter("players");
