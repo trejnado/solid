@@ -19,7 +19,7 @@ public class University {
     }
 
     public void startAcademicYear() {
-        makeCoachWork();
+        activateCoach();
 
         giveCoachTimeToTrainNewPlayers();
     }
@@ -28,7 +28,7 @@ public class University {
         executor.shutdown();
     }
 
-    private void makeCoachWork() {
+    private void activateCoach() {
         executor.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
