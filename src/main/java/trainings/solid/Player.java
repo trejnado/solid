@@ -40,10 +40,4 @@ public class Player {
     public void setPosition(Position position) {
         this.position = position;
     }
-
-    @Override
-    public String toString() {
-        return String.format("%-15s(%2s), points: %2d, assists: %2d",
-                name, position, points, assists);
-    }
 }

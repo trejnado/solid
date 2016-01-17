@@ -49,12 +49,10 @@ public class Application {
 
         // form a team from players and print its stats:
         Team team = new Team("SOLID", players);
-        System.out.printf("%s Team total points: %d, assists: %d%n",
-                team.getName(), team.getPoints(), team.getAssists());
-        // Instead of logging:
+        System.out.println(StatsFormatter.format(team));
         System.out.println("Players:");
         for (Player player : players) {
-            System.out.println(player);
+            System.out.println(StatsFormatter.format(player));
         }
 
         // export all players to a CSV file:
