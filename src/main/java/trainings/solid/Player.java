@@ -43,11 +43,7 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player{" +
-                "name='" + name + '\'' +
-                ", position=" + position +
-                ", points=" + points +
-                ", assists=" + assists +
-                '}';
+        return String.format("%-15s(%2s), points: %2d, assists: %2d",
+                name, position, points, assists);
     }
 }

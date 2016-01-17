@@ -25,7 +25,6 @@ public class Application {
         URI datasetUri = Application.class.getClassLoader().getResource("player-data.txt").toURI();
         for (String line : Files.readAllLines(Paths.get(datasetUri), StandardCharsets.UTF_8)) {
             if (line.startsWith("#")) {
-                System.out.println(line);
                 continue;
             }
             String[] fields = line.split(",");
@@ -48,16 +47,19 @@ public class Application {
             sorter.sort(players);
         }
 
-        // export all players to a CSV file:
-        CSVExporter csv = new CSVExporter("players");
-        System.out.println("Players:");
-        csv.write(players);
-
         // form a team from players and print its stats:
         Team team = new Team("SOLID", players);
-        System.out.println("Team: " + team.getName());
-        System.out.println(" points : " + team.getPoints());
-        System.out.println(" assists: " + team.getAssists());
+        System.out.printf("%s Team total points: %d, assists: %d%n",
+                team.getName(), team.getPoints(), team.getAssists());
+        // Instead of logging:
+        System.out.println("Players:");
+        for (Player player : players) {
+            System.out.println(player);
+        }
+
+        // export all players to a CSV file:
+        CSVExporter csv = new CSVExporter(team.getName());
+        csv.write(players);
 
         university.stopAcademicYear();
     }

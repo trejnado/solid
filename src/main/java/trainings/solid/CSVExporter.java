@@ -19,7 +19,6 @@ public class CSVExporter {
         try (BufferedWriter csv = Files.newBufferedWriter(file, UTF_8)) {
             csv.write("#name,position,points,assists\n");
             for (Player player : players) {
-                System.out.println(player);
                 csv.write(player.getName() + "," + player.getPosition() +
                         "," + player.getPoints() + "," + player.getAssists()
                         + "\n");
