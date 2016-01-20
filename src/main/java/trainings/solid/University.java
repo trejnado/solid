@@ -1,7 +1,5 @@
 package trainings.solid;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -11,7 +9,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class University {
 
-    private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private final UniversityCoach coach;
 
     public University(PlayerRecruiter recruiter) {
@@ -19,22 +16,13 @@ public class University {
     }
 
     public void startAcademicYear() {
-        activateCoach();
+        coach.startWork();
 
         giveCoachTimeToTrainNewPlayers();
     }
 
     public void stopAcademicYear() {
-        executor.shutdown();
-    }
-
-    private void activateCoach() {
-        executor.scheduleWithFixedDelay(new Runnable() {
-            @Override
-            public void run() {
-                coach.work();
-            }
-        }, 0, 50, TimeUnit.MILLISECONDS);
+        coach.stopWork();
     }
 
     private void giveCoachTimeToTrainNewPlayers() {

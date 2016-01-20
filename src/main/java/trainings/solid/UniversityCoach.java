@@ -3,9 +3,13 @@ package trainings.solid;
 import trainings.solid.Player.Position;
 
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class UniversityCoach {
 
+    private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private Random random = new Random();
 
     private PlayerRecruiter recruiter;
@@ -14,7 +18,20 @@ public class UniversityCoach {
         this.recruiter = recruiter;
     }
 
-    public void work() {
+    public void startWork() {
+        executor.scheduleWithFixedDelay(new Runnable() {
+            @Override
+            public void run() {
+                work();
+            }
+        }, 0, 50, TimeUnit.MILLISECONDS);
+    }
+
+    public void stopWork() {
+        executor.shutdown();
+    }
+
+    private void work() {
         Player player = new Player();
         player.setName("Random Joe #" + random.nextInt(100));
         player.setPoints((byte) random.nextInt(50));
