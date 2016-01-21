@@ -13,7 +13,7 @@ public class Application {
         University university = new University(recruiter);
         university.startAcademicYear();
 
-        CSVImporter importer = new CSVImporter();
+        PlayerImporter importer = new CSVImporter();
         List<Player> players = importer.loadPlayers();
 
         // recruit new players from the University
@@ -32,7 +32,7 @@ public class Application {
         }
 
         // export all players to a CSV file:
-        CSVExporter csv = new CSVExporter(team.getName());
+        PlayerExporter csv = new CSVExporter(team.getName());
         csv.write(players);
 
         university.stopAcademicYear();

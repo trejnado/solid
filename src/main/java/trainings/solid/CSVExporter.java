@@ -8,7 +8,7 @@ import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class CSVExporter {
+public class CSVExporter implements PlayerExporter {
     private final Path file;
 
     public CSVExporter(String filename) throws IOException {
