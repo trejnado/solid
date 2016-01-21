@@ -7,7 +7,7 @@ import java.util.List;
 public class Application {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
-        Sorter sorter = CommandLineParser.parse(args);
+        DataProcessor processor = CommandLineParser.parse(args);
 
         PlayerRecruiter recruiter = new PlayerRecruiter();
         University university = new University(recruiter);
@@ -21,9 +21,8 @@ public class Application {
             players.add(recruiter.draft());
         }
 
-        // process players
-        if (sorter != null) {
-            sorter.sort(players);
+        if (processor != null) {
+            processor.process(players);
         }
 
         // form a team from players and print its stats:

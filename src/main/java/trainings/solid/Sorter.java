@@ -8,7 +8,7 @@ import java.util.List;
 
 import java.util.Collections;
 
-public class Sorter {
+public class Sorter implements DataProcessor {
 
     private String sortBy;
 
@@ -16,7 +16,8 @@ public class Sorter {
         this.sortBy = sortBy;
     }
 
-    public void sort(List<Player> players) {
+    @Override
+    public void process(List<Player> players) {
         System.out.println("Sorting by: " + sortBy);
         switch (sortBy) {
             case "name":
