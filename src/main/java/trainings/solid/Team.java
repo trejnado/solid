@@ -2,13 +2,18 @@ package trainings.solid;
 
 import java.util.List;
 
-public class Team extends Player {
+public class Team extends StatisticalItem {
 
     private final List<Player> players;
 
     public Team(String name, List<Player> players) {
         setName(name);
         this.players = players;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return String.format("%s Team", getName());
     }
 
     @Override
@@ -21,32 +26,12 @@ public class Team extends Player {
     }
 
     @Override
-    public void setPoints(int points) {
-        throw new UnsupportedOperationException("Team has player points!");
-    }
-
-    @Override
     public int getAssists() {
         int sum = 0;
         for (Player player : players) {
             sum += player.getAssists();
         }
         return sum;
-    }
-
-    @Override
-    public void setAssists(int assists) {
-        throw new UnsupportedOperationException("Team has player assists!");
-    }
-
-    @Override
-    public Position getPosition() {
-        throw new UnsupportedOperationException("Team has no position!");
-    }
-
-    @Override
-    public void setPosition(Position position) {
-        throw new UnsupportedOperationException("Team has no position!");
     }
 
     @Override
