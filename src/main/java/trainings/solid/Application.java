@@ -21,9 +21,7 @@ public class Application {
             players.add(recruiter.draft());
         }
 
-        if (processor != null) {
-            processor.process(players);
-        }
+        processor.process(players);
 
         // form a team from players and print its stats:
         Team team = new Team("SOLID", players);
