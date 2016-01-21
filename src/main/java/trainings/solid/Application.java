@@ -16,10 +16,7 @@ public class Application {
         PlayerImporter importer = new CSVImporter();
         List<Player> players = importer.loadPlayers();
 
-        // recruit new players from the University
-        while (recruiter.hasPlayers()) {
-            players.add(recruiter.draft());
-        }
+        recruitPlayers(recruiter, players);
 
         processor.process(players);
 
@@ -36,5 +33,11 @@ public class Application {
         csv.write(players);
 
         university.stopAcademicYear();
+    }
+
+    private static void recruitPlayers(PlayerLottery recruiter, List<Player> players) {
+        while (recruiter.hasPlayers()) {
+            players.add(recruiter.draft());
+        }
     }
 }

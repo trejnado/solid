@@ -12,9 +12,9 @@ public class UniversityCoach {
     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private Random random = new Random();
 
-    private PlayerRecruiter recruiter;
+    private PlayerPool recruiter;
 
-    public UniversityCoach(PlayerRecruiter recruiter) {
+    public UniversityCoach(PlayerPool recruiter) {
         this.recruiter = recruiter;
     }
 
