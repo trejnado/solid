@@ -4,21 +4,18 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class CSVExporter implements PlayerExporter {
-    private final Path file;
+    private Path file;
 
-    public CSVExporter(String filename) throws IOException {
-        file = Files.createTempFile(filename, ".csv");
-    }
-
-    public void write(List<Player> players) {
+    @Override
+    public void write(Team team) throws IOException {
+        createFile(team.getName());
         try (BufferedWriter csv = Files.newBufferedWriter(file, UTF_8)) {
             csv.write("#name,position,points,assists\n");
-            for (Player player : players) {
+            for (Player player : team.getPlayers()) {
                 csv.write(player.getName() + "," + player.getPosition() +
                         "," + player.getPoints() + "," + player.getAssists()
                         + "\n");
@@ -26,5 +23,9 @@ public class CSVExporter implements PlayerExporter {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void createFile(String filename) throws IOException {
+        file = Files.createTempFile(filename, ".csv");
     }
 }

@@ -9,13 +9,16 @@ public class Application {
     private final PlayerRecruiter recruiter;
     private final University university;
     private final PlayerImporter importer;
+    private final PlayerExporter exporter;
     private final DataProcessor processor;
 
     public Application(PlayerRecruiter recruiter, University university,
-                       PlayerImporter importer, DataProcessor processor) {
+                       PlayerImporter importer, PlayerExporter exporter,
+                       DataProcessor processor) {
         this.recruiter = recruiter;
         this.university = university;
         this.importer = importer;
+        this.exporter = exporter;
         this.processor = processor;
     }
 
@@ -24,8 +27,9 @@ public class Application {
         PlayerRecruiter recruiter = new PlayerRecruiter();
         University university = new University(recruiter);
         PlayerImporter importer = new CSVImporter();
+        PlayerExporter exporter = new CSVExporter();
 
-        Application app = new Application(recruiter, university, importer, processor);
+        Application app = new Application(recruiter, university, importer, exporter, processor);
 
         app.processPlayers();
     }
@@ -48,13 +52,8 @@ public class Application {
         university.stopAcademicYear();
     }
 
-    private PlayerExporter createExporter(Team team) throws IOException {
-        return new CSVExporter(team.getName());
-    }
-
     private void exportPlayers(Team team) throws IOException {
-        PlayerExporter exporter = createExporter(team);
-        exporter.write(team.getPlayers());
+        exporter.write(team);
     }
 
     private void printStats(Team team) {

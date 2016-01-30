@@ -1,8 +1,9 @@
 package trainings.solid;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface PlayerExporter {
 
-    void write(List<Player> players);
+    void write(Team team) throws IOException;
 }
