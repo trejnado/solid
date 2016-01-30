@@ -10,3 +10,5 @@ systems.
 
 # Your task
 ... is to apply each of [SOLID](SOLID.md) principles to improve the application.
+
+Now do: ```git checkout -f step0```
