@@ -1,7 +1,5 @@
 package trainings.solid;
 
-import java.util.List;
-
 public class Best5Processor implements DataProcessor {
 
     private final String field;
@@ -11,9 +9,9 @@ public class Best5Processor implements DataProcessor {
     }
 
     @Override
-    public void process(List<Player> players) {
+    public void process(Team team) {
         DataProcessor sorter = new Sorter(field);
-        sorter.process(players);
-        players.subList(5, players.size()).clear();
+        sorter.process(team);
+        team.getPlayers().subList(5, team.getPlayers().size()).clear();
     }
 }

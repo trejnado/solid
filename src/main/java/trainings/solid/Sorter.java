@@ -23,12 +23,12 @@ public class Sorter implements DataProcessor {
     }
 
     @Override
-    public void process(List<Player> players) {
+    public void process(Team team) {
         System.out.println("Sorting by: " + sortBy);
         Comparator<Player> comparator = fields.get(sortBy);
         if (comparator == null) {
             throw new IllegalArgumentException("Unknown option: " + sortBy);
         }
-        Collections.sort(players, comparator);
+        Collections.sort(team.getPlayers(), comparator);
     }
 }

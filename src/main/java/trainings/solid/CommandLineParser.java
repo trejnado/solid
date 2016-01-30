@@ -1,7 +1,5 @@
 package trainings.solid;
 
-import java.util.List;
-
 public class CommandLineParser {
 
     private static class NoopProcessor implements DataProcessor {
@@ -9,7 +7,7 @@ public class CommandLineParser {
         public static DataProcessor INSTANCE = new NoopProcessor();
 
         @Override
-        public void process(List<Player> players) {
+        public void process(Team team) {
             // does nothing
         }
     }

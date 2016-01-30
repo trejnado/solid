@@ -2,7 +2,6 @@ package trainings.solid;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
 
 public class Application {
 
@@ -31,29 +30,31 @@ public class Application {
 
         Application app = new Application(recruiter, university, importer, exporter, processor);
 
-        app.processPlayers();
+        app.processTeam();
     }
 
-    private void processPlayers() throws IOException {
+    private void processTeam() throws IOException {
         university.startAcademicYear();
 
-        List<Player> players = importer.loadPlayers();
+        Team team = loadTeam("SOLID");
 
-        recruitPlayers(recruiter, players);
+        recruitPlayers(team);
 
-        processor.process(players);
-
-        Team team = new Team("SOLID", players);
+        processor.process(team);
 
         printStats(team);
 
-        exportPlayers(team);
+        export(team);
 
         university.stopAcademicYear();
     }
 
-    private void exportPlayers(Team team) throws IOException {
+    private void export(Team team) throws IOException {
         exporter.write(team);
+    }
+
+    private Team loadTeam(String name) {
+        return new Team(name, importer.loadPlayers());
     }
 
     private void printStats(Team team) {
@@ -64,9 +65,9 @@ public class Application {
         }
     }
 
-    private void recruitPlayers(PlayerLottery recruiter, List<Player> players) {
+    private void recruitPlayers(Team team) {
         while (recruiter.hasPlayers()) {
-            players.add(recruiter.draft());
+            team.getPlayers().add(recruiter.draft());
         }
     }
 }
