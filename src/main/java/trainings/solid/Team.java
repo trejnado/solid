@@ -11,6 +11,10 @@ public class Team extends StatisticalItem {
         this.players = players;
     }
 
+    public List<Player> getPlayers() {
+        return players;
+    }
+
     @Override
     public String getDisplayName() {
         return String.format("%s Team", getName());
