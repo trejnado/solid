@@ -284,6 +284,6 @@ Layered Architecture, Hexagonal Architecture, game logic
 
 # Reading<a id="orgheadline35"></a>
 
-## Chapters 8 to 12 in "Agile Principles, Patterns, and Practices in C#" by Robert Martin<a id="orgheadline33"></a>
-
-## GRASP Patterns in "Applying UML and Patterns" by Craig Larman<a id="orgheadline34"></a>
+- Composed Method in "Refactoring to Patterns" by Joshua Kerievsky
+- Chapters 8 to 12 in "Agile Principles, Patterns, and Practices in C#" by Robert Martin<a id="orgheadline33"></a>
+- GRASP Patterns in "Applying UML and Patterns" by Craig Larman<a id="orgheadline34"></a>
