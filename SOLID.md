@@ -72,43 +72,136 @@ properly defined responsibilities.
 
 Before SRP:
 
-    public interface Rectangle {
-        void draw();
-        double area();
+```java
+package com.sabre.solid.before;
+
+import java.util.LinkedList;
+import java.util.List;
+
+class Room {
+    public boolean occupied = false;
+    public final int capacity;
+
+    public Room(int capacity) {
+        this.capacity = capacity;
     }
+}
+
+// Mixed responsibilities: calculating of rooms, alerting, instantiation
+class Hotel {
+    public List<Room> rooms = new LinkedList<>();
+
+    public int numberOfFreeRooms() {
+        int numberOfFreeRooms = 0;
+        for (Room room : rooms) {
+            if (!room.occupied) {
+                numberOfFreeRooms++;
+            }
+        }
+        return numberOfFreeRooms;
+    }
+
+    public void alertIfOnlyFiveRoomsAvailable() {
+        if ((rooms.size() - numberOfFreeRooms()) == 1) {
+            System.out.println("No rooms available!");
+        }
+    }
+
+    public Room createNewSingleRoom() {
+        return new Room(1);
+    }
+}
+
+public class SingleResponsibility {
+
+    public static void main(String[] args) {
+        Hotel hotel = new Hotel();
+
+        for (int i = 0; i < 6; ++i) {
+            hotel.rooms.add(hotel.createNewSingleRoom());
+        }
+
+        System.out.println("Number of free rooms: " + hotel.numberOfFreeRooms());
+        hotel.alertIfOnlyFiveRoomsAvailable();
+
+        hotel.rooms.get(0).occupied = true;
+        System.out.println("Number of free rooms: " + hotel.numberOfFreeRooms());
+        hotel.alertIfOnlyFiveRoomsAvailable();
+    }
+}
+```
 
 After SRP:
 
-    public interface Rectangle {
-        void draw();
+```java
+package com.sabre.solid.after;
+
+import java.util.LinkedList;
+import java.util.List;
+
+class Room {
+    public boolean occupied = false;
+    public final int capacity;
+
+    public Room(int capacity) {
+        this.capacity = capacity;
     }
-    
-    public interface GeometricRectangle {
-        double area();
+}
+
+class Hotel {
+    public List<Room> rooms = new LinkedList<>();
+
+    public int numberOfFreeRooms() {
+        int numberOfFreeRooms = 0;
+        for (Room room : rooms) {
+            if (!room.occupied) {
+                numberOfFreeRooms++;
+            }
+        }
+        return numberOfFreeRooms;
+    }
+}
+
+class RoomAlerter {
+    private final Hotel hotel;
+
+    public RoomAlerter(Hotel hotel) {
+        this.hotel = hotel;
     }
 
-### Modem -> ModemConnection + ModemDataChannel<a id="orgheadline6"></a>
-
-Before SRP:
-
-    public interface Modem {
-         public void dial (String phoneNumber);
-         public void send (byte [ ] message);
-         public byte [ ] receive();
-         public void hangUp();
+    public void alertIfOnlyFiveRoomsAvailable() {
+        if (hotel.numberOfFreeRooms() == 5) {
+            System.out.println("No rooms available!");
+        }
     }
+}
 
-After SRP:
+class RoomCreator {
+    public Room createNewSingleRoom() {
+        return new Room(1);
+    }
+}
 
-    public interface ModemConnection {
-         public void dial (String phoneNumber);
-         public void hangUp();
+public class SingleResponsibility {
+
+    public static void main(String[] args) {
+        RoomCreator roomCreator = new RoomCreator();
+        Hotel hotel = new Hotel();
+        RoomAlerter alerter = new RoomAlerter(hotel);
+
+        for (int i = 0; i < 6; ++i) {
+            hotel.rooms.add(roomCreator.createNewSingleRoom());
+        }
+
+        System.out.println("Number of free rooms: " + hotel.numberOfFreeRooms());
+        alerter.alertIfOnlyFiveRoomsAvailable();
+
+        hotel.rooms.get(0).occupied = true;
+        System.out.println("Number of free rooms: " + hotel.numberOfFreeRooms());
+        alerter.alertIfOnlyFiveRoomsAvailable();
     }
-    
-    public interface ModemDataChannel {
-         public void send (byte [ ] message);
-         public byte [ ] receive();
-    }
+}
+```
 
 # Open Closed Principle<a id="orgheadline15"></a>
 
@@ -166,6 +259,77 @@ Remember:
 Everything what introduces abstractions to shield from changeability, e.g.:
 Template Method, Strategy, Bridge, etc.
 
+Before OCP:
+```java
+package com.sabre.solid.before;
+
+enum RecorderType { Tape, CD }
+
+// New recorder type == change in existing code:
+class RecordingMachine {
+
+    public void record(RecorderType logType, String message) {
+        switch (logType) {
+            case Tape:
+                System.out.println("Recording on Tape: " + message);
+                break;
+            case CD:
+                System.out.println("Recording on CD: " + message);
+                break;
+        }
+    }
+}
+
+public class OpenClosed {
+
+    public static void main(String[] args) {
+        RecordingMachine recorder = new RecordingMachine();
+        recorder.record(RecorderType.CD, "a tune");
+        recorder.record(RecorderType.Tape, "a tune");
+    }
+}
+```
+
+After OCP:
+```java
+package com.sabre.solid.after;
+
+// Hide changing part under stable interface:
+interface Recorder {
+    void record(String message);
+}
+
+class TapeRecorder implements Recorder {
+    @Override
+    public void record(String message) {
+        //Record on tape
+    }
+}
+
+class CDRecorder implements Recorder {
+    @Override
+    public void record(String message) {
+        //Record on CD
+    }
+}
+
+// New recorder type == no change in existing code:
+class RecordingMachine {
+    public void record(Recorder recorder, String message) {
+        recorder.record(message);
+    }
+}
+
+public class OpenClosed {
+
+    public static void main(String[] args) {
+        RecordingMachine recorder = new RecordingMachine();
+        recorder.record(new CDRecorder(), "a tune");
+        recorder.record(new TapeRecorder(), "a tune");
+    }
+}
+```
+
 # Liskov Substitution Principle<a id="orgheadline20"></a>
 
 "Derived classes must be substitutable for their base classes."
@@ -205,6 +369,170 @@ Subclasses eliminate part of functionality of their superclasses:
 Violation: Square inherits from Rectangle, Compound Processors in Camel
 LSP: collections in Java, streams, Adapter pattern
 
+Before LSP:
+```java
+package com.sabre.solid.before;
+
+class Thermometer {
+
+    private int maxTemperature = 100;
+
+    public int getCurrentTemperature() {
+        int currentTemperature = measureTemperature();
+        if (currentTemperature > maxTemperature) {
+            throw new IllegalStateException("Temperature exceeded: " + maxTemperature);
+        }
+        return currentTemperature;
+    }
+
+    private int measureTemperature() {
+        return 1;
+    }
+}
+
+class PreciseThermometer extends Thermometer {
+    private double maxTemperature = 80.0;
+
+    @Override
+    public int getCurrentTemperature() {
+        return (int) getPreciseCurrentTemperature();
+    }
+
+    public double getPreciseCurrentTemperature() {
+        double currentTemperature = measureTemperature();
+        if (currentTemperature > maxTemperature) {
+            throw new IndexOutOfBoundsException("Exceeded: " + maxTemperature);
+        }
+        return currentTemperature;
+    }
+
+    private double measureTemperature() {
+        return 1.0;
+    }
+}
+
+class TemperatureAverageCalculator {
+    private Thermometer[] thermometers;
+
+    public TemperatureAverageCalculator(Thermometer... thermometers) {
+        this.thermometers = thermometers;
+    }
+
+    public double getAveragePreciseTemperature() {
+        double sum = 0;
+        for (Thermometer thermometer : thermometers) {
+            if (thermometer instanceof PreciseThermometer) {
+                sum += ((PreciseThermometer) thermometer).getPreciseCurrentTemperature();
+            } else {
+                sum += thermometer.getCurrentTemperature();
+            }
+        }
+        return sum / (double) thermometers.length;
+    }
+
+    public double getAverageTemperature() {
+        double sum = 0;
+        for (Thermometer thermometer : thermometers) {
+            sum += thermometer.getCurrentTemperature();
+        }
+        return sum / thermometers.length;
+    }
+}
+
+public class Liskov {
+
+    public static void main(String[] args) {
+        TemperatureAverageCalculator calculator
+                = new TemperatureAverageCalculator(new Thermometer(), new PreciseThermometer());
+        System.out.println("Avg temp: " + calculator.getAverageTemperature());
+        System.out.println("Avg precise temp: " + calculator.getAveragePreciseTemperature());
+    }
+}
+```
+
+After LSP:
+```java
+package com.sabre.solid.after;
+
+class Thermometer {
+
+    private int maxTemperature = 100;
+
+    public int getCurrentTemperature() {
+        int currentTemperature = measureTemperature();
+        if (currentTemperature > maxTemperature) {
+            throw new IllegalStateException("Temperature exceeded: " + maxTemperature);
+        }
+        return currentTemperature;
+    }
+
+    public double getPreciseCurrentTemperature() {
+        return (double) getCurrentTemperature();
+    }
+
+    private int measureTemperature() {
+        return 1;
+    }
+}
+
+class PreciseThermometer extends Thermometer {
+
+    private double maxTemperature = 100.0;
+
+    @Override
+    public int getCurrentTemperature() {
+        return (int) getPreciseCurrentTemperature();
+    }
+
+    @Override
+    public double getPreciseCurrentTemperature() {
+        double currentTemperature = measureTemperature();
+        if (currentTemperature > maxTemperature) {
+            throw new IndexOutOfBoundsException("Exceeded: " + maxTemperature);
+        }
+        return currentTemperature;
+    }
+
+    private double measureTemperature() {
+        return 1.0;
+    }
+}
+
+class TemperatureAverageCalculator {
+    private Thermometer[] thermometers;
+
+    public TemperatureAverageCalculator(Thermometer... thermometers) {
+        this.thermometers = thermometers;
+    }
+
+    public double getAveragePreciseTemperature() {
+        double sum = 0;
+        for (Thermometer thermometer : thermometers) {
+            sum += thermometer.getPreciseCurrentTemperature();
+        }
+        return sum / (double) thermometers.length;
+    }
+
+    public double getAverageTemperature() {
+        double sum = 0;
+        for (Thermometer thermometer : thermometers) {
+            sum += thermometer.getCurrentTemperature();
+        }
+        return sum / thermometers.length;
+    }
+}
+
+public class Liskov {
+
+    public static void main(String[] args) {
+        TemperatureAverageCalculator calculator
+                = new TemperatureAverageCalculator(new Thermometer(), new PreciseThermometer());
+        System.out.println("Avg temp: " + calculator.getAverageTemperature());
+        System.out.println("Avg precise temp: " + calculator.getAveragePreciseTemperature());
+    }
+}
+```
+
 # Interface Segregation Principle<a id="orgheadline26"></a>
 
 "Make fine grained interfaces that are client specific."
@@ -238,6 +566,142 @@ LSP: collections in Java, streams, Adapter pattern
 ## Examples<a id="orgheadline25"></a>
 
 Big controllers splint into small, based on use cases.
+
+Before ISP:
+```java
+package com.sabre.solid.before;
+
+interface Person {
+    String name();
+    String email();
+}
+
+// Using the same interface...
+class MyFriend {
+    public String name() {
+        return "Jon Snow";
+    }
+
+    public String email() {
+        return "lordcommander@nights-watch.org";
+    }
+
+    public String profession() {
+        return "Nights Watch";
+    }
+
+    public Person[] family() {
+        return new Person[0];
+    }
+
+    public String phone() {
+        return "123";
+    }
+}
+
+// ...by different clients, in different ways:
+
+class InkedIn {
+    public void register(MyFriend person) {
+        // One way:
+        System.out.printf("Registering professional: %s. Sending an email to %s%n",
+                person.profession(), person.email());
+    }
+}
+
+class Facetook {
+    public void register(MyFriend person) {
+        // Another way:
+        System.out.printf("Dialing telephone number %s of contact.%n",
+                person.phone());
+    }
+}
+
+public class InterfaceSegregation {
+
+    private static InkedIn inkedIn = new InkedIn();
+    private static Facetook facetook = new Facetook();
+
+    public static void main(String[] args) {
+        MyFriend person = new MyFriend();
+        inkedIn.register(person);
+        facetook.register(person);
+    }
+}
+```
+
+After ISP:
+```java
+package com.sabre.solid.after;
+
+interface Person {
+    String name();
+    String email();
+}
+
+// One interface for one client:
+interface ProfessionalPerson extends Person {
+    String profession();
+    Person[] family();
+}
+
+// Another interface for other client:
+interface SocialPerson extends Person {
+    String phone();
+}
+
+class MyFriend implements ProfessionalPerson, SocialPerson {
+    @Override
+    public String name() {
+        return "Jon Snow";
+    }
+
+    @Override
+    public String email() {
+        return "lordcommander@nights-watch.org";
+    }
+
+    @Override
+    public String profession() {
+        return "Nights Watch";
+    }
+
+    @Override
+    public Person[] family() {
+        return new Person[0];
+    }
+
+    @Override
+    public String phone() {
+        return "123";
+    }
+}
+
+class InkedIn {
+    public void register(ProfessionalPerson person) {
+        System.out.printf("Registering professional: %s. Sending an email to %s%n",
+                person.profession(), person.email());
+    }
+}
+
+class Facetook {
+    public void register(SocialPerson person) {
+        System.out.printf("Dialing telephone number %s of contact.%n", person.phone());
+    }
+}
+
+public class InterfaceSegregation {
+
+    private static InkedIn inkedIn = new InkedIn();
+    private static Facetook facetook = new Facetook();
+
+    public static void main(String[] args) {
+        MyFriend person = new MyFriend();
+        inkedIn.register(person);
+        facetook.register(person);
+    }
+}
+```
 
 # Dependency Inversion Principle<a id="orgheadline32"></a>
 
@@ -280,7 +744,116 @@ With DIP - OO project, without DIP - procedural (no matter which language).
 
 ## Examples<a id="orgheadline31"></a>
 
-Layered Architecture, Hexagonal Architecture, game logic
+Layered Architecture, Hexagonal Architecture, game logic.
+
+Before DIP:
+```java
+package com.sabre.solid.before;
+
+// Business logic operates directly on implementation:
+class PostOffice {
+    public PostOfficeWorker pickingGuy = new PostOfficeWorker();
+    public PostOfficeWorker deliveryGuy = new PostOfficeWorker();
+
+    public void transferPackage(String packageName) {
+        pickingGuy.pickFromSender(packageName);
+        pickingGuy.storeInWarehouse(packageName);
+        deliveryGuy.getFromWarehouse(packageName);
+        deliveryGuy.deliver(packageName);
+    }
+}
+
+class PostOfficeWorker {
+    public void pickFromSender(String packageName) {
+        System.out.printf("Picking %s from sender.%n", packageName);
+    }
+
+    public void storeInWarehouse(String packageName) {
+        System.out.printf("Storing %s in warehouse.%n", packageName);
+    }
+
+    public void getFromWarehouse(String packageName) {
+        System.out.printf("Getting %s from warehouse.%n", packageName);
+    }
+
+    public void deliver(String packageName) {
+        System.out.printf("Delivering %s.%n", packageName);
+    }
+}
+
+public class DependencyInversion {
+
+    public static void main(String[] args) {
+        PostOffice po = new PostOffice();
+        po.transferPackage("Books");
+    }
+}
+```
+
+After DIP:
+```java
+package com.sabre.solid.after;
+
+// Business logic in main module:
+class PostOffice {
+
+    private PickUpWorker pickingGuy;
+    private DeliveryWorker deliveryGuy;
+
+    public PostOffice(PickUpWorker pickingGuy, DeliveryWorker deliveryGuy) {
+        this.pickingGuy = pickingGuy;
+        this.deliveryGuy = deliveryGuy;
+    }
+
+    public void transferPackage(String packageName) {
+        pickingGuy.pickFromSender(packageName);
+        pickingGuy.storeInWarehouse(packageName);
+        deliveryGuy.getFromWarehouse(packageName);
+        deliveryGuy.deliver(packageName);
+    }
+}
+
+// Specifies interfaces on which it operates:
+interface PickUpWorker {
+    void pickFromSender(String packageName);
+
+    void storeInWarehouse(String packageName);
+}
+
+interface DeliveryWorker {
+    void getFromWarehouse(String packageName);
+
+    void deliver(String packageName);
+}
+
+// -- implementation in possibly other modules, lower layers
+class PostOfficeWorker implements PickUpWorker, DeliveryWorker {
+
+    public void pickFromSender(String packageName) {
+        System.out.printf("Picking %s from sender.%n", packageName);
+    }
+
+    public void storeInWarehouse(String packageName) {
+        System.out.printf("Storing %s in warehouse.%n", packageName);
+    }
+
+    public void getFromWarehouse(String packageName) {
+        System.out.printf("Getting %s from warehouse.%n", packageName);
+    }
+
+    public void deliver(String packageName) {
+        System.out.printf("Delivering %s.%n", packageName);
+    }
+}
+
+public class DependencyInversion {
+    public static void main(String[] args) {
+        PostOfficeWorker worker = new PostOfficeWorker();
+        PostOffice po = new PostOffice(worker, worker);
+        po.transferPackage("Books");
+    }
+}
+```
 
 # Reading<a id="orgheadline35"></a>
 
