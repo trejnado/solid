@@ -51,6 +51,7 @@ Responsibility in SRP = reason of change
 
 ## How to find<a id="orgheadline3"></a>
 
+-   use of "and"/"or" when describing what a class is doing
 -   class/interface methods are on different levels of abstraction (see Modem)
 -   methods of a class work on different business areas; for example
     Rectangle - calculates area (geometry) and drawing on a screen (GUI), or
