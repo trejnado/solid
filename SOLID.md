@@ -552,7 +552,7 @@ public class Liskov {
 
 ## How to find<a id="orgheadline23"></a>
 
--   different clients are using different sets of methods
+-   different clients are using different sets of methods (focus on roles!)
 
 ## How to introduce<a id="orgheadline24"></a>
 
